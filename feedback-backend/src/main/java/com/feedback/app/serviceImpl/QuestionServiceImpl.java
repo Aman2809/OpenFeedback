@@ -33,9 +33,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question getQuestionById(Long questionId) {
-        Question idQuestion= questionRepository.findById(questionId)
+        return questionRepository.findById(questionId)
                 .orElseThrow(()->new ResourceNotFoundException("Question", "questionId", questionId));
-        return idQuestion;
     }
 
     @Override
