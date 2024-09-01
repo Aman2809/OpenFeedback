@@ -13,7 +13,7 @@ public class FeedbackResponse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long responseId;
 
-    @ManyToOne(cascade = CascadeType.REMOVE) // Cascade delete
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE) // Cascade delete
     @JoinColumn(name = "question_id")
     private Question question; // Reference to the Question entity
 
