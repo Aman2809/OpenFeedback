@@ -1,5 +1,6 @@
 package com.feedback.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,11 @@ public class FeedbackResponse {
     @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE) // Cascade delete
     @JoinColumn(name = "question_id")
     private Question question; // Reference to the Question entity
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Ensure proper linkage to Feedback
+    @JoinColumn(name = "feedback_id")
+    @JsonBackReference
+    private Feedback feedback;
 
     private Integer emojiValue; // The response value (1 to 5)
 

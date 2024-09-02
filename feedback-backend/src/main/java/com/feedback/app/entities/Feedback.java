@@ -1,5 +1,6 @@
 package com.feedback.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +25,9 @@ public class Feedback {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "feedback_id")
+    @JsonManagedReference
     private List<FeedbackResponse> responses; // List of responses, each linked to a Question
 
     public Feedback() {
