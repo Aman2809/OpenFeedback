@@ -2,6 +2,9 @@ package com.feedback.app.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +26,8 @@ public class FeedbackResponse {
     @JsonBackReference
     private Feedback feedback;
 
+    @Min(1)
+    @Max(5)
     private Integer emojiValue; // The response value (1 to 5)
 
 

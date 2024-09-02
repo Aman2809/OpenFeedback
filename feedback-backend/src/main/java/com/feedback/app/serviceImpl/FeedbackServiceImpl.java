@@ -3,8 +3,10 @@ package com.feedback.app.serviceImpl;
 
 import com.feedback.app.entities.Feedback;
 import com.feedback.app.entities.FeedbackResponse;
+import com.feedback.app.entities.Question;
 import com.feedback.app.exceptions.ResourceNotFoundException;
 import com.feedback.app.repositories.FeedbackRepository;
+import com.feedback.app.repositories.QuestionRepository;
 import com.feedback.app.service.FeedbackService;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +19,28 @@ import java.util.stream.Collectors;
 public class FeedbackServiceImpl implements FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
+    private final QuestionRepository questionRepository;
 
-    public FeedbackServiceImpl(FeedbackRepository feedbackRepository) {
+    public FeedbackServiceImpl(FeedbackRepository feedbackRepository, QuestionRepository questionRepository) {
         this.feedbackRepository = feedbackRepository;
+        this.questionRepository = questionRepository;
     }
+
+//    public FeedbackServiceImpl(FeedbackRepository feedbackRepository) {
+//        this.feedbackRepository = feedbackRepository;
+//    }
 
     @Override
     public Feedback addFeedback(Feedback feedback) {
+        // For each response, fetch the full Question entity
+        for (FeedbackResponse response : feedback.getResponses()) {
+            Long questionId = response.getQuestion().getQuestionId();
+            Question fullQuestion = questionRepository.findById(questionId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Question", "questionId", questionId));
+
+            // Set the full Question object in the response
+            response.setQuestion(fullQuestion);
+        }
         return feedbackRepository.save(feedback);
     }
 

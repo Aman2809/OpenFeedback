@@ -1,6 +1,7 @@
 package com.feedback.app.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ public class Question {
     private Long questionId;
 
     @Column
+    @NotEmpty(message = "Question cant be Null !! ")
     private String questionText;
 
     @Column

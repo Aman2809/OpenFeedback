@@ -3,6 +3,7 @@ package com.feedback.app.controllers;
 import com.feedback.app.entities.Feedback;
 import com.feedback.app.payloads.ApiResponse;
 import com.feedback.app.service.FeedbackService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class FeedbackController {
 
     // POST --> Create Feedback
     @PostMapping("/create")
-    public ResponseEntity<Feedback> createFeedback(@RequestBody Feedback feedback) {
+    public ResponseEntity<Feedback> createFeedback(@Valid @RequestBody Feedback feedback) {
         Feedback createdFeedback = feedbackService.addFeedback(feedback);
         return new ResponseEntity<>(createdFeedback, HttpStatus.CREATED);
     }
@@ -50,7 +51,7 @@ public class FeedbackController {
 
     // PUT --> Update Feedback
     @PutMapping("/update/{feedbackId}")
-    public ResponseEntity<Feedback> updateFeedback(@RequestBody Feedback feedback,@PathVariable Long feedbackId) {
+    public ResponseEntity<Feedback> updateFeedback( @Valid @RequestBody Feedback feedback,@PathVariable Long feedbackId) {
         Feedback updatedFeedback = feedbackService.updateFeedback( feedback,feedbackId);
         return new ResponseEntity<>(updatedFeedback, HttpStatus.OK);
     }

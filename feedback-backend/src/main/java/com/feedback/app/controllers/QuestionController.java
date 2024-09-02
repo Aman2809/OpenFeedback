@@ -3,6 +3,7 @@ package com.feedback.app.controllers;
 import com.feedback.app.entities.Question;
 import com.feedback.app.payloads.ApiResponse;
 import com.feedback.app.service.QuestionService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class QuestionController {
 
     // POST --> Create Questions
     @PostMapping("/create")
-    public ResponseEntity<Question> createQuestions(@RequestBody Question question) {
+    public ResponseEntity<Question> createQuestions(@Valid @RequestBody Question question) {
 
         Question createdQuestion = questionService.saveQuestion(question);
         return new ResponseEntity<Question>(createdQuestion , HttpStatus.OK);
@@ -29,7 +30,7 @@ public class QuestionController {
 
     // PUT --> Update Questions
     @PutMapping("/update/{questionId}")
-    public ResponseEntity<Question> updateQuestion(@RequestBody Question question ,@PathVariable Long questionId) {
+    public ResponseEntity<Question> updateQuestion(@Valid @RequestBody Question question ,@PathVariable Long questionId) {
         Question updatedQuestion = questionService.updateQuestion(question, questionId);
         return new ResponseEntity<Question>(updatedQuestion , HttpStatus.OK);
     }
