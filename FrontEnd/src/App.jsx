@@ -1,17 +1,24 @@
-import { useState } from 'react'
+import React from 'react';
 
-import './App.css'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0)
+
+import PublicFeedback from './pages/PublicFeedback';
+
+const App = () => {
+  const router = createBrowserRouter([
+
+    {
+      path: "/",
+      element: <PublicFeedback />,
+    },
+
+  ]);
 
   return (
-    <>
-       <h1 className="text-3xl font-bold underline">
-      Hello world!!
-    </h1>
-    </>
-  )
-}
+      <RouterProvider router={router} />
 
-export default App
+  );
+};
+
+export default App;
