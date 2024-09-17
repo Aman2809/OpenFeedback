@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 
 import PublicFeedback from './pages/PublicFeedback';
+import Admin from './pages/Admin';
+import Navigation from './components/Navigation';
 
 const App = () => {
   const router = createBrowserRouter([
@@ -11,6 +13,14 @@ const App = () => {
     {
       path: "/",
       element: <PublicFeedback />,
+    },
+    {
+      path: "/admin",
+      element: <Admin />,
+    },
+    {
+      path: "/nav",
+      element: <Navigation />,
     },
 
   ]);
