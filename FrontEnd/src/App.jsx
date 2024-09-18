@@ -7,6 +7,7 @@ import PublicFeedback from './pages/PublicFeedback';
 import Admin from './pages/Admin';
 import Navigation from './components/Navigation';
 import QuestionManage from './pages/QuestionManage';
+import FeedbackManage from './pages/FeedbackManage';
 
 const App = () => {
   const router = createBrowserRouter([
@@ -27,6 +28,11 @@ const App = () => {
       path: "/ques",
       element: <QuestionManage />,
     },
+    {
+      path: "/feedback",
+      element: <FeedbackManage />,
+    },
+
 
   ]);
 

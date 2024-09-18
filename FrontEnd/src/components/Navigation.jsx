@@ -37,7 +37,7 @@ const Navigation = () => {
                             </NavLink>
                         </li>
                         <li className='mb-2'>
-                            <NavLink to='/'
+                            <NavLink to='/feedback'
                                 className={({ isActive }) =>
                                     isActive ? 'block p-3 bg-green-100 text-green-500 rounded-md font-bold' : 'block p-3 rounded-md font-semibold hover:bg-gray-100 hover:font-semibold'}
                             >

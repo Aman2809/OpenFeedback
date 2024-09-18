@@ -69,3 +69,34 @@ export const toggleQuestionStatus = async (questionId) => {
     throw error;
   }
 };
+
+
+// Fetch Feedback by ID
+export const fetchFeedbackById = async (feedbackId) => {
+  try {
+    const response = await myAxios.get(`/feedback/${feedbackId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Fetch Feedback by Session ID
+export const fetchFeedbackBySessionId = async (sessionId) => {
+  try {
+    const response = await myAxios.get(`/feedback/session/${sessionId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Delete Feedback
+export const deleteFeedback = async (feedbackId) => {
+  try {
+    const response = await myAxios.delete(`/feedback/delete/${feedbackId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

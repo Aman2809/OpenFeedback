@@ -68,7 +68,7 @@ const QuestionManage = () => {
       <Navigation />
 
       <div className="flex-1 p-6 bg-gray-100">
-        <h1 className="text-2xl font-bold mb-6">Questions Management</h1>
+        <h1 className="text-2xl font-bold mb-6">Manage Questions</h1>
 
         {/* Form for Create or Edit */}
         <div className="mb-6">
