@@ -100,3 +100,31 @@ export const deleteFeedback = async (feedbackId) => {
     throw error;
   }
 };
+
+
+// Fetch Ratings for a Specific Question
+export const fetchRatingsForQuestion = async (questionId) => {
+  try {
+    const response = await myAxios.get(`/feedback/question/${questionId}/ratings`);
+    // console.log("Response Data:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching ratings for question:", error);
+    throw error;
+  }
+};
+
+
+
+export const fetchRatingPercentagesForQuestion = async (questionId) => {
+  try {
+    const response = await myAxios.get(`/feedback/ratings/${questionId}/percentages`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+
