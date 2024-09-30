@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -55,6 +57,26 @@ public class FeedbackController {
         Feedback updatedFeedback = feedbackService.updateFeedback( feedback,feedbackId);
         return new ResponseEntity<>(updatedFeedback, HttpStatus.OK);
     }
+
+    @GetMapping("/question/{questionId}/ratings")
+    public ResponseEntity<Map<String, Object>> getRatingsForQuestion(@PathVariable Long questionId) {
+        Map<String, Object> ratingsData = new HashMap<>();
+//        ratingsData.put("ratingsCount", feedbackService.getRatingCountForQuestion(questionId));
+        ratingsData.put("ratingsPercentage", feedbackService.getRatingPercentagesForQuestion(questionId));
+        ratingsData.put("averageRating", feedbackService.getAverageRatingForQuestion(questionId)); // Add average rating
+        return new ResponseEntity<>(ratingsData, HttpStatus.OK);
+    }
+
+
+
+    // GET --> Retrieve Rating Percentages for a Specific Question (with total)
+    @GetMapping("/ratings/{questionId}/percentages")
+    public ResponseEntity<Map<String, Object>> getRatingPercentagesForQuestion(@PathVariable Long questionId) {
+        Map<String, Object> ratingPercentages = feedbackService.getRatingPercentagesForQuestion(questionId);
+        return new ResponseEntity<>(ratingPercentages, HttpStatus.OK);
+    }
+
+
 
     // DELETE --> Delete Feedback
     @DeleteMapping("/delete/{feedbackId}")

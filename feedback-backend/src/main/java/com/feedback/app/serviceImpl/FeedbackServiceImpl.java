@@ -6,10 +6,12 @@ import com.feedback.app.entities.FeedbackResponse;
 import com.feedback.app.entities.Question;
 import com.feedback.app.exceptions.ResourceNotFoundException;
 import com.feedback.app.repositories.FeedbackRepository;
+import com.feedback.app.repositories.FeedbackResponseRepository;
 import com.feedback.app.repositories.QuestionRepository;
 import com.feedback.app.service.FeedbackService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -18,12 +20,15 @@ import java.util.stream.Collectors;
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
 
+    private final FeedbackResponseRepository feedbackResponseRepository;
     private final FeedbackRepository feedbackRepository;
     private final QuestionRepository questionRepository;
 
-    public FeedbackServiceImpl(FeedbackRepository feedbackRepository, QuestionRepository questionRepository) {
+    public FeedbackServiceImpl(FeedbackResponseRepository feedbackResponseRepository, FeedbackRepository feedbackRepository, QuestionRepository questionRepository) {
+        this.feedbackResponseRepository = feedbackResponseRepository;
         this.feedbackRepository = feedbackRepository;
         this.questionRepository = questionRepository;
+
     }
 
 //    public FeedbackServiceImpl(FeedbackRepository feedbackRepository) {
@@ -91,6 +96,100 @@ public class FeedbackServiceImpl implements FeedbackService {
     public List<Feedback> findAll() {
         return feedbackRepository.findAll();
     }
+
+    @Override
+    public Map<String, Object> getRatingsForQuestion(Long questionId) {
+        List<FeedbackResponse> responses = feedbackResponseRepository.findByQuestionId(questionId);
+
+        // Map to store count of each rating
+        Map<Integer, Long> ratingsCount = new HashMap<>();
+        long totalRatings = 0;
+
+        // Calculate ratings count
+        for (FeedbackResponse response : responses) {
+            int emojiValue = response.getEmojiValue();
+            ratingsCount.put(emojiValue, ratingsCount.getOrDefault(emojiValue, 0L) + 1);
+            totalRatings++; // Increment total count
+        }
+
+        // Return both the ratings count and the total number of ratings
+        Map<String, Object> result = new HashMap<>();
+        result.put("ratings", ratingsCount);
+        result.put("total", totalRatings);
+
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getRatingPercentagesForQuestion(Long questionId) {
+        List<FeedbackResponse> responses = feedbackResponseRepository.findByQuestionId(questionId);
+
+        // Map to store count of each rating
+        Map<Integer, Long> ratingsCount = new HashMap<>();
+        long totalRatings = 0;
+
+        // Calculate ratings count
+        for (FeedbackResponse response : responses) {
+            int emojiValue = response.getEmojiValue();
+            ratingsCount.put(emojiValue, ratingsCount.getOrDefault(emojiValue, 0L) + 1);
+            totalRatings++;
+        }
+
+        // Calculate percentages
+        Map<Integer, Double> ratingPercentages = new HashMap<>();
+        for (Map.Entry<Integer, Long> entry : ratingsCount.entrySet()) {
+            ratingPercentages.put(entry.getKey(), (entry.getValue() * 100.0) / totalRatings);
+        }
+
+        // Return both the percentages and the total number of ratings
+        Map<String, Object> result = new HashMap<>();
+        result.put("percentages", ratingPercentages);
+        result.put("total", totalRatings);
+
+        return result;
+    }
+
+
+    @Override
+    public Double getAverageRatingForQuestion(Long questionId) {
+        List<FeedbackResponse> responses = feedbackResponseRepository.findByQuestionId(questionId);
+        if (responses.isEmpty()) {
+            return 0.0; // Return 0 if no responses are found
+        }
+
+        double total = 0;
+        for (FeedbackResponse response : responses) {
+            total += response.getEmojiValue(); // Assuming emojiValue represents the rating
+        }
+
+        return total / responses.size(); // Calculate the average
+    }
+
+
+    @Override
+    public Map<String, Integer> getRatingCountForQuestion(Long questionId) {
+        List<FeedbackResponse> responses = feedbackResponseRepository.findByQuestionId(questionId);
+
+        Map<String, Integer> ratingCount = new HashMap<>();
+        ratingCount.put("5", 0);
+        ratingCount.put("4", 0);
+        ratingCount.put("3", 0);
+        ratingCount.put("2", 0);
+        ratingCount.put("1", 0);
+
+        for (FeedbackResponse response : responses) {
+            int rating = response.getEmojiValue(); // Assuming emojiValue represents the rating
+            if (rating >= 1 && rating <= 5) {
+                ratingCount.put(String.valueOf(rating), ratingCount.get(String.valueOf(rating)) + 1);
+            }
+        }
+
+        return ratingCount;
+    }
+
+
+
+
 
     @Override
     public void deleteById(Long feedbackId) {
