@@ -7,6 +7,7 @@ import {
   fetchRatingPercentagesForQuestion,
 } from '../services/AdminService';
 import Navigation from '../components/Navigation';
+import { Menu } from 'lucide-react';
 
 const Admin = () => {
   const [totalQuestions, setTotalQuestions] = useState(0);
@@ -17,7 +18,8 @@ const Admin = () => {
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [ratingsData, setRatingsData] = useState(null);
   const [percentagesData, setPercentagesData] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown visibility
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   useEffect(() => {
     fetchAllQuestions().then((data) => {
@@ -64,8 +66,7 @@ const Admin = () => {
     }
   }, [selectedQuestionId]);
 
-  const handleQuestionClick = async (questionId) => {
-    console.log("Selected Question ID:", questionId); // Log selected question ID
+  const handleQuestionClick = (questionId) => {
     setSelectedQuestionId(questionId);
     setDropdownOpen(false);
   };
@@ -75,19 +76,32 @@ const Admin = () => {
   };
 
   const getBarStyle = (percentage) => {
-    // Dynamically set the width of the bar based on the percentage
     return {
       width: `${percentage}%`,
-      backgroundColor: percentage > 0 ? '#01875f' : '#e0e0e0', // Green if filled, grey if not
+      backgroundColor: percentage > 0 ? '#01875f' : '#e0e0e0',
     };
   };
 
   return (
-    <div className="flex min-h-screen">
-      <Navigation />
-      <div className="flex-1 flex flex-col p-6 bg-gray-100">
-        <h1 className='text-2xl font-bold mb-5'>Dashboard</h1>
-        <div className='flex gap-8'>
+    <div className="flex">
+      {/* Mobile Navigation Toggle */}
+      <div className="md:hidden fixed top-0 left-0 p-4 z-50">
+        <button onClick={() => setIsNavOpen(!isNavOpen)} className="text-gray-500 bg-white rounded-full p-2 shadow-md">
+          <Menu size={24} />
+        </button>
+      </div>
+
+      {/* Sliding Navigation for mobile */}
+      <div className={`fixed inset-y-0 left-0 transform ${isNavOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition duration-200 ease-in-out z-30 md:relative md:flex`}>
+        <div className="bg-white h-full w-64 shadow-lg overflow-y-auto md:shadow-none">
+          <Navigation />
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className=" flex-1 p-4 bg-gray-100">
+        <h1 className='text-2xl text-center sm:text-left font-bold mb-5'>Dashboard</h1>
+        <div className='md:flex flex-col md:flex-row  gap-8'>
           <div className="bg-black text-white shadow-md rounded-lg p-6 mb-6">
             <h2 className="text-xl font-semibold mb-2">Total Questions</h2>
             <p className="text-4xl font-bold">{totalQuestions}</p>
@@ -102,12 +116,13 @@ const Admin = () => {
           </div>
         </div>
 
+        {/* Ratings and Recent Feedback */}
         <div className='h-[55vh] '>
           <div>
             <h2 className='text-2xl p-3 font-semibold mb-1'>Select a Question to View Ratings</h2>
             <div className="relative">
               <button onClick={toggleDropdown} className="border rounded p-2 mx-5 bg-blue-500 text-white">
-                {selectedQuestionId ? `Question ID: ${selectedQuestionId}` : "Select a Question"}
+                {selectedQuestionId ? `Change Question` : "Select a Question"}
               </button>
               {dropdownOpen && (
                 <ul className="absolute z-10 bg-white border rounded shadow-md w-full mt-1">
@@ -124,29 +139,26 @@ const Admin = () => {
               )}
             </div>
           </div>
-          {/* <h2 className='mx-5 mt-2'>Ratings for Selected Question ID: {selectedQuestionId}</h2> */}
 
           {ratingsData && (
-            <div className="mt-3 mx-4 flex">
-              <div className="flex flex-col w-1/4"> {/* Left Side: Average Rating */}
+            <div className="mt-3 mx-4 flex sm:max-w-[620px]">
+              <div className="flex flex-col w-1/4">
                 <div className="flex flex-col justify-center items-center">
                   <h3 className='text-5xl font-bold'>
                     {ratingsData.averageRating !== undefined
                       ? ratingsData.averageRating.toFixed(1)
                       : 'N/A'}
                   </h3>
-                  <p className="text-lg">Average Rating</p>
+                  <p className=" text-sm text-nowrap md:text-lg">Average Rating</p>
                 </div>
                 <div className="flex flex-col justify-center items-center mt-4">
                   <h3 className='text-3xl font-bold'>
                     {percentagesData?.total || 0}
                   </h3>
-                  <p className="text-sm font-semibold">Total Responses</p>
+                  <p className="  text-xs md:text-sm text-nowrap font-semibold">Total Responses</p>
                 </div>
               </div>
-
-              <div className="flex flex-col w-9/12 ml-4"> {/* Right Side: Percentage Breakdown */}
-                {/* <h3 className='font-bold'>Total Ratings: {percentagesData?.total || 0}</h3> */}
+              <div className="flex flex-col w-9/12 ml-4">
                 <div className="flex flex-col">
                   {[5, 4, 3, 2, 1].map((rating) => (
                     <div key={rating} className="flex items-center mb-2">
@@ -156,7 +168,7 @@ const Admin = () => {
                       <div className="flex-1 h-3 bg-gray-300 rounded-full overflow-hidden">
                         <div
                           className="h-full"
-                          style={getBarStyle(percentagesData?.percentages[rating] || 0)} // Default to 0 if undefined
+                          style={getBarStyle(percentagesData?.percentages[rating] || 0)}
                         ></div>
                       </div>
                       <span className="ml-2">
@@ -168,19 +180,19 @@ const Admin = () => {
               </div>
             </div>
           )}
-
-
         </div>
       </div>
 
-      {/* Recent Feedback */}
-      <div className='bg-gray-100 h-screen p-6 w-[25vw]'>
+      {/* Recent Feedback Section */}
+      <div className='bg-gray-100 h-screen p-6 w-[25vw] hidden lg:block overflow-y-auto'>
         <div className="mt-5 p-6">
           <h2 className="text-xl font-semibold mb-2">Recent Feedback</h2>
           <ul>
             {recentFeedback.map((feedback, index) => (
-              <li key={index} className="mb-2">
-                {feedback.comment || "No comment provided"} - {feedback.date}
+              <li key={index} className="mb-2 border-b pb-2">
+                <p className="font-semibold">{feedback.user || "No User Data Available!"}</p>
+                <p className="text-sm text-gray-500">{new Date(feedback.createdAt).toLocaleString()}</p>
+                <p>{feedback.comment || "No comment provided"}</p>
               </li>
             ))}
           </ul>
