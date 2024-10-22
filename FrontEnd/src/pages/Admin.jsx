@@ -101,7 +101,7 @@ const Admin = () => {
       {/* Main content */}
       <div className=" flex-1 p-4 bg-gray-100">
         <h1 className='text-2xl text-center sm:text-left font-bold mb-5'>Dashboard</h1>
-        <div className='md:flex flex-col md:flex-row  gap-8'>
+        <div className='md:flex flex-col md:flex-row md:justify-around gap-8'>
           <div className="bg-black text-white shadow-md rounded-lg p-6 mb-6">
             <h2 className="text-xl font-semibold mb-2">Total Questions</h2>
             <p className="text-4xl font-bold">{totalQuestions}</p>
@@ -125,7 +125,7 @@ const Admin = () => {
                 {selectedQuestionId ? `Change Question` : "Select a Question"}
               </button>
               {dropdownOpen && (
-                <ul className="absolute z-10 bg-white border rounded shadow-md w-full mt-1">
+                <ul className="absolute z-10 bg-white border rounded overflow-y-auto max-h-60 shadow-md w-full mt-1">
                   {questions.map(question => (
                     <li
                       key={question.questionId}
@@ -141,7 +141,7 @@ const Admin = () => {
           </div>
 
           {ratingsData && (
-            <div className="mt-3 mx-4 flex sm:max-w-[620px]">
+            <div className="mt-3 mx-4 flex md:max-w-[700px]">
               <div className="flex flex-col w-1/4">
                 <div className="flex flex-col justify-center items-center">
                   <h3 className='text-5xl font-bold'>
@@ -183,8 +183,25 @@ const Admin = () => {
         </div>
       </div>
 
+{/* Desktop Table View */}
+<style>
+          {`
+            @media (min-width: 768px) {
+              .desktop-table {
+                display: block !important;
+              }
+            }
+            @media (max-width: 767px) {
+              .desktop-table {
+                display: none !important;
+              }
+            }
+          `}
+        </style>
+
+
       {/* Recent Feedback Section */}
-      <div className='bg-gray-100 h-screen p-6 w-[25vw] hidden lg:block overflow-y-auto'>
+      <div className='bg-gray-100 screen p-6 w-[25vw] desktop-table overflow-y-auto'>
         <div className="mt-5 p-6">
           <h2 className="text-xl font-semibold mb-2">Recent Feedback</h2>
           <ul>

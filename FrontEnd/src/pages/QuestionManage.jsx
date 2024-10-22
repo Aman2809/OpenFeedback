@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { fetchAllQuestions, createQuestion, updateQuestion, deleteQuestion, toggleQuestionStatus } from '../services/AdminService';
 import Navigation from '../components/Navigation';
 import { Menu } from 'lucide-react';
+import { FaToggleOff } from "react-icons/fa6";
+import { MdEditSquare } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 
 const QuestionManage = () => {
   const [questions, setQuestions] = useState([]);
@@ -127,9 +130,9 @@ const QuestionManage = () => {
     </div>
 
     {/* Questions List */}
-    <div className="overflow-y-auto max-h-72">
+    <div className="overflow-y-auto max-h-[415px] md:max-h-[302px]">
       <table className="w-full min-w-full bg-white rounded-lg shadow-md">
-        <thead className="sticky top-0 bg-[#009879] text-white">
+        <thead className="sticky top-0  bg-[#009879] text-white">
           <tr>
             <th className="px-4 py-3">Question Text</th>
             <th className="px-4 py-3">Status</th>
@@ -139,11 +142,13 @@ const QuestionManage = () => {
         <tbody>
           {questions.map((question, index) => (
             <tr
-              key={question.questionId}
-              className={`border-b ${
-                index % 2 === 1 ? 'bg-gray-50' : 'bg-white'
-              }`}
-            >
+            key={question.questionId}
+            className={`border border-gray-300 ${
+              index === questions.length - 1
+                ? 'border-b-2 border-b-[#009879]'
+                : 'border-b'
+            } ${index % 2 === 1 ? 'bg-gray-50 font-bold text-[#009879]' : 'bg-white'}`}
+          >
               <td className="px-4 py-2">{question.questionText}</td>
               <td className="px-4 py-2">
                 {question.active ? 'Active' : 'Inactive'}
@@ -153,19 +158,19 @@ const QuestionManage = () => {
                   onClick={() => handleToggleStatus(question.questionId)}
                   className="bg-yellow-500 text-white px-2 py-1 rounded-md mr-2 mb-1 sm:mb-0"
                 >
-                  Toggle
+                 <FaToggleOff className='text-2xl'/>
                 </button>
                 <button
                   onClick={() => handleEdit(question)}
                   className="bg-green-500 text-white px-2 py-1 rounded-md mr-2 mb-1 sm:mb-0"
                 >
-                  Edit
+                  <MdEditSquare className='text-2xl' />
                 </button>
                 <button
                   onClick={() => handleDelete(question.questionId)}
                   className="bg-red-500 text-white px-2 py-1 rounded-md"
                 >
-                  Delete
+                  <MdDelete className='text-2xl' />
                 </button>
               </td>
             </tr>
