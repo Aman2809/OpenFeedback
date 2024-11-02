@@ -1,5 +1,6 @@
 package com.feedback.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,6 +30,10 @@ public class Feedback {
     @JoinColumn(name = "feedback_id")
     @JsonManagedReference
     private List<FeedbackResponse> responses; // List of responses, each linked to a Question
+
+    @OneToOne(mappedBy = "feedback", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private UserDeviceInfo userDeviceInfo;
 
     public Feedback() {
         this.sessionId = UUID.randomUUID();

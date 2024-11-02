@@ -4,6 +4,7 @@ package com.feedback.app.serviceImpl;
 import com.feedback.app.entities.Feedback;
 import com.feedback.app.entities.FeedbackResponse;
 import com.feedback.app.entities.Question;
+import com.feedback.app.entities.UserDeviceInfo;
 import com.feedback.app.exceptions.ResourceNotFoundException;
 import com.feedback.app.repositories.FeedbackRepository;
 import com.feedback.app.repositories.FeedbackResponseRepository;
@@ -11,10 +12,7 @@ import com.feedback.app.repositories.QuestionRepository;
 import com.feedback.app.service.FeedbackService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,7 +43,14 @@ public class FeedbackServiceImpl implements FeedbackService {
 
             // Set the full Question object in the response
             response.setQuestion(fullQuestion);
+            response.setFeedback(feedback);
         }
+
+        // Device info is already set in the controller
+        if (feedback.getUserDeviceInfo() != null) {
+            feedback.getUserDeviceInfo().setFeedback(feedback);
+        }
+
         return feedbackRepository.save(feedback);
     }
 
@@ -186,6 +191,38 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         return ratingCount;
     }
+
+
+    @Override
+    public Map<Integer, List<UserDeviceInfo>> getUsersByRatingForQuestion(Long questionId) {
+        Map<Integer, List<UserDeviceInfo>> usersByRating = new HashMap<>();
+
+        // Loop through ratings from 1 to 5
+        for (int rating = 1; rating <= 5; rating++) {
+            List<FeedbackResponse> responses = feedbackResponseRepository.findByQuestion_QuestionIdAndEmojiValue(questionId, rating);
+
+            List<UserDeviceInfo> users = responses.stream()
+                    .map(response -> response.getFeedback().getUserDeviceInfo())
+                    .collect(Collectors.toList());
+
+            usersByRating.put(rating, users);
+        }
+
+        return usersByRating;
+    }
+
+    @Override
+    public List<UserDeviceInfo> getUsersByRatingForQuestion(Long questionId, int rating) {
+        // Find all FeedbackResponse for a given question and rating (1 to 5)
+        List<FeedbackResponse> responses = feedbackResponseRepository.findByQuestion_QuestionIdAndEmojiValue(questionId, rating);
+
+        // Extract UserDeviceInfo from the associated feedback, filtering out any nulls
+        return responses.stream()
+                .map(response -> response.getFeedback().getUserDeviceInfo())
+                .filter(Objects::nonNull) // Remove null entries
+                .collect(Collectors.toList());
+    }
+
 
 
 

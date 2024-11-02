@@ -1,6 +1,7 @@
 package com.feedback.app.service;
 
 import com.feedback.app.entities.Feedback;
+import com.feedback.app.entities.UserDeviceInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -21,5 +22,10 @@ public interface FeedbackService {
     Map<String, Object> getRatingPercentagesForQuestion(Long questionId);
     Double getAverageRatingForQuestion(Long questionId);
     Map<String, Integer> getRatingCountForQuestion(Long questionId);
+
+    Map<Integer, List<UserDeviceInfo>> getUsersByRatingForQuestion(Long questionId);
+
+    List<UserDeviceInfo> getUsersByRatingForQuestion(Long questionId, int rating);
+
 
 }

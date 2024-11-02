@@ -1,6 +1,7 @@
 package com.feedback.app.controllers;
 
 import com.feedback.app.entities.Feedback;
+import com.feedback.app.entities.UserDeviceInfo;
 import com.feedback.app.payloads.ApiResponse;
 import com.feedback.app.service.FeedbackService;
 import jakarta.validation.Valid;
@@ -25,7 +26,36 @@ public class FeedbackController {
 
     // POST --> Create Feedback
     @PostMapping("/create")
-    public ResponseEntity<Feedback> createFeedback(@Valid @RequestBody Feedback feedback) {
+    public ResponseEntity<Feedback> createFeedback(
+            @RequestParam(required = false) String deviceId,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String deviceOs,
+            @RequestParam(required = false) String deviceOsVersion,
+            @RequestParam(required = false) String displayWidth,
+            @RequestParam(required = false) String displayHeight,
+            @RequestParam(required = false) String deviceRam,
+            @RequestParam(required = false) String deviceStorage,
+            @RequestParam(required = false) String deviceProcessorModel,
+            @RequestParam(required = false) String email,
+            @Valid @RequestBody Feedback feedback) {
+
+        // Create UserDeviceInfo
+        UserDeviceInfo deviceInfo = new UserDeviceInfo();
+        deviceInfo.setCountry(country);
+        deviceInfo.setDeviceOs(deviceOs);
+        deviceInfo.setDeviceOsVersion(deviceOsVersion);
+        deviceInfo.setDisplayWidth(displayWidth);
+        deviceInfo.setDisplayHeight(displayHeight);
+        deviceInfo.setDeviceRam(deviceRam);
+        deviceInfo.setDeviceStorage(deviceStorage);
+        deviceInfo.setDeviceProcessorModel(deviceProcessorModel);
+        deviceInfo.setEmail(email);
+
+
+        // Set device info to feedback
+        feedback.setUserDeviceInfo(deviceInfo);
+        deviceInfo.setFeedback(feedback);
+
         Feedback createdFeedback = feedbackService.addFeedback(feedback);
         return new ResponseEntity<>(createdFeedback, HttpStatus.CREATED);
     }
@@ -75,6 +105,29 @@ public class FeedbackController {
         Map<String, Object> ratingPercentages = feedbackService.getRatingPercentagesForQuestion(questionId);
         return new ResponseEntity<>(ratingPercentages, HttpStatus.OK);
     }
+
+    //Get --> Retreive all teh users based on the particular question rating
+    @GetMapping("/question/{questionId}/users-by-rating")
+    public ResponseEntity<Map<Integer, List<UserDeviceInfo>>> getUsersByRatingForQuestion(@PathVariable Long questionId) {
+        Map<Integer, List<UserDeviceInfo>> usersByRating = feedbackService.getUsersByRatingForQuestion(questionId);
+        return new ResponseEntity<>(usersByRating, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/question/{questionId}/users/rating/{rating}")
+    public ResponseEntity<List<UserDeviceInfo>> getUsersByRating(
+            @PathVariable Long questionId,
+            @PathVariable int rating) {
+
+        // Ensure rating is between 1 and 5
+        if (rating < 1 || rating > 5) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        List<UserDeviceInfo> users = feedbackService.getUsersByRatingForQuestion(questionId, rating);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
 
 
 

@@ -12,4 +12,7 @@ public interface FeedbackResponseRepository extends JpaRepository<FeedbackRespon
     // Fetch all feedback responses for a specific question
     @Query("SELECT fr FROM FeedbackResponse fr WHERE fr.question.questionId = :questionId")
     List<FeedbackResponse> findByQuestionId(@Param("questionId") Long questionId);
+
+    List<FeedbackResponse> findByQuestion_QuestionIdAndEmojiValue(Long questionId, int emojiValue);
+
 }

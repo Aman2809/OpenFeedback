@@ -30,5 +30,4 @@ public class FeedbackResponse {
     @Max(5)
     private Integer emojiValue; // The response value (1 to 5)
 
-
 }
