@@ -1,37 +1,51 @@
 
-
 ---
 
 # OpenFeedback
 
-**OpenFeedback** is a feedback management system built with Spring Boot and React. It allows users to submit feedback through a form and provides an admin panel for managing questions, viewing feedback, and monitoring key metrics through a dashboard.
+## Overview
+
+**OpenFeedback** is a feedback management system designed for gathering and analyzing user feedback. The application includes a feedback form for users to submit their responses, an admin panel for managing questions and feedback, and a dashboard for monitoring key metrics. Built using **Spring Boot** for the backend and **React** for the frontend, OpenFeedback helps streamline feedback collection and analysis, making it easier for administrators to track responses and gain insights.
 
 ## Features
 
-- **Feedback Form**: Users can fill out and submit feedback.
-- **Admin Panel**:
-  - **Manage Questions**: Add, edit, and delete feedback questions.
-  - **View Feedback**: Review submitted feedback.
-- **Dashboard**:
-  - Overview of total questions and feedback submitted.
-  - Drill-down to review specific questions and their feedback.
+### Feedback Form
+- Users can fill out and submit feedback for various questions.
+  
+### Admin Panel
+- **Manage Questions**: Admins can add, update, or delete feedback questions.
+- **View Feedback**: Admins can view and analyze submitted feedback from users.
+  
+### Dashboard
+- Overview of total questions and total feedback submitted.
+- Admins can review and manage specific questions and feedback responses.
 
-## Tech Stack
+## Technologies Used
 
-- **Frontend**: React
-- **Backend**: Spring Boot
-- **Database**: MySQL
-- **Others**: RESTful APIs, Axios, Bootstrap/Material-UI for UI design
+### Frontend
+- **React** for building the user interface.
+- **Material-UI** for pre-designed components and styling.
+- **Axios** for making HTTP requests.
+
+### Backend
+- **Spring Boot** for the backend REST API.
+- **MySQL** for database management.
+- **Spring Data JPA** for interacting with the database.
+
+### Tools & Libraries
+- **Formik** for form management.
+- **Spring Security** for authentication and authorization (if needed).
+- **Swagger** for API documentation.
 
 ## Screenshots
 
 ### Feedback Form
 ![Feedback Form](path/to/feedback-form-image.png)
 
-### Manage Questions
+### Admin Panel - Manage Questions
 ![Manage Questions](path/to/manage-questions-image.png)
 
-### View Feedback
+### Admin Panel - View Feedback
 ![View Feedback](path/to/view-feedback-image.png)
 
 ### Dashboard
@@ -39,57 +53,74 @@
 
 > Replace `path/to/...` with the actual file paths for your screenshots.
 
-## How to Run
+## Project Structure
 
-1. Clone the repository:
+### Backend
+- **Controller**: Handles HTTP requests and returns responses.
+- **Service**: Contains business logic for feedback and question management.
+- **Repository**: Interfaces with the database to fetch and store data.
+
+### Frontend
+- **components/FeedbackForm**: Handles the feedback submission form.
+- **components/AdminPanel**: Displays and manages feedback and questions.
+- **components/Dashboard**: Displays key metrics and overview of feedback data.
+
+## API Endpoints
+
+### Feedback API
+- `/api/feedback`: Submit feedback.
+- `/api/feedback/{id}`: Fetch feedback by ID.
+
+### Questions API
+- `/api/questions`: Add, update, or delete questions.
+- `/api/questions/{id}`: Fetch question by ID.
+
+### Dashboard API
+- `/api/dashboard`: Get total questions and feedback count.
+
+## Setup & Installation
+
+### Clone the repository
+```bash
+git clone https://github.com/yourusername/OpenFeedback.git
+```
+
+### Backend Setup
+1. Navigate to the backend directory.
+2. Make sure you have **JDK** and **Maven** installed.
+3. Update the `application.properties` file with your MySQL database credentials.
+4. Run the Spring Boot application:
    ```bash
-   git clone https://github.com/Aman2809/OpenFeedback.git
+   mvn spring-boot:run
    ```
-2. Navigate to the project directory:
+
+### Frontend Setup
+1. Navigate to the frontend directory.
+2. Install the necessary dependencies:
    ```bash
-   cd OpenFeedback
+   npm install
    ```
-3. **Backend Setup**:
-   - Navigate to the backend folder:
-     ```bash
-     cd backend
-     ```
-   - Configure the database connection in `application.properties`.
-   - Build and run the Spring Boot application:
-     ```bash
-     mvn spring-boot:run
-     ```
-4. **Frontend Setup**:
-   - Navigate to the frontend folder:
-     ```bash
-     cd frontend
-     ```
-   - Install dependencies and start the development server:
-     ```bash
-     npm install
-     npm start
-     ```
-5. Open your browser and navigate to `http://localhost:3000` for the frontend.
+3. Start the React application:
+   ```bash
+   npm start
+   ```
 
-## Future Improvements
+### Access the Application
+Open your browser and navigate to `http://localhost:5173` for the frontend.
 
-- Add user authentication for admins.
-- Export feedback data as CSV or Excel.
-- Implement real-time updates for feedback submissions.
+## Future Enhancements
+- Add user authentication and authorization.
+- Implement real-time feedback tracking.
+- Allow export of feedback data in CSV or Excel format.
+- Mobile responsiveness and PWA capabilities.
 
 ## Contributing
-
-Feel free to submit issues or feature requests. Fork the repository to make contributions and open a pull request for review.
+Contributions are welcome! Feel free to fork the repository, submit a pull request, or open an issue to discuss changes.
 
 ## License
+This project is licensed under the **MIT License**.
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+## Contact
+For any queries or issues, feel free to contact me at [jhaaman1005@gmail.com].
 
 ---
-
-### Instructions for Adding Screenshots
-
-1. Take screenshots of the pages using your browser's screenshot tool or any third-party tool.
-2. Save the images in a folder named `screenshots` within the project directory.
-3. Use the relative path to these images in the markdown file, e.g., `screenshots/feedback-form.png`.
-
