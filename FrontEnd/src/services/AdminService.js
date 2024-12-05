@@ -125,6 +125,16 @@ export const fetchRatingPercentagesForQuestion = async (questionId) => {
   }
 };
 
+export const fetchUsersByRatingForQuestion = async (questionId, rating) => {
+  try {
+    const response = await myAxios.get(`/feedback/question/${questionId}/users/rating/${rating}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 
 
 

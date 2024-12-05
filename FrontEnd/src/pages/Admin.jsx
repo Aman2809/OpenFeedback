@@ -5,9 +5,11 @@ import {
   fetchActiveQuestions,
   fetchRatingsForQuestion,
   fetchRatingPercentagesForQuestion,
+  fetchUsersByRatingForQuestion
 } from '../services/AdminService';
 import Navigation from '../components/Navigation';
 import { Menu } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
   const [totalQuestions, setTotalQuestions] = useState(0);
@@ -20,6 +22,8 @@ const Admin = () => {
   const [percentagesData, setPercentagesData] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAllQuestions().then((data) => {
@@ -68,8 +72,37 @@ const Admin = () => {
 
   const handleQuestionClick = (questionId) => {
     setSelectedQuestionId(questionId);
+    console.log("Selected Question: ",questionId)
     setDropdownOpen(false);
   };
+
+
+  // const handleRatingClick=(e,rating)=>{
+  //   e.preventDefault();
+  //   console.log("clicked rating: ",rating);
+  // };
+  
+
+  const handleRatingClick = async (e, rating) => {
+    e.preventDefault();
+    // console.log("questionId is : ",selectedQuestionId)
+    if (!selectedQuestionId) {
+      console.error("No question selected!");
+      return;
+    }
+    navigate(`/userrating?questionId=${selectedQuestionId}&rating=${rating}`);
+
+  
+    // try {
+    //   const users = await fetchUsersByRatingForQuestion(selectedQuestionId, rating);
+    //   console.log("Users with rating:", rating, users);
+
+    //   // Handle users data (e.g., update state, show in modal, etc.)
+    // } catch (error) {
+    //   console.error("Error fetching users by rating:", error);
+    // }
+  };
+
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -163,7 +196,8 @@ const Admin = () => {
                   {[5, 4, 3, 2, 1].map((rating) => (
                     <div key={rating} className="flex items-center mb-2">
                       <div className="flex items-center w-16">
-                        <span className="font-semibold">{rating} Star</span>
+                        {/* <span className="font-semibold">{rating} Star</span> */}
+                        <a href="/userrating" onClick={(e)=>handleRatingClick(e,rating)}><span className="font-semibold">{rating} Star</span></a>
                       </div>
                       <div className="flex-1 h-3 bg-gray-300 rounded-full overflow-hidden">
                         <div
@@ -209,7 +243,7 @@ const Admin = () => {
               <li key={index} className="mb-2 border-b pb-2">
                 <p className="font-semibold">{feedback.user || "No User Data Available!"}</p>
                 <p className="text-sm text-gray-500">{new Date(feedback.createdAt).toLocaleString()}</p>
-                <p>{feedback.comment || "No comment provided"}</p>
+                {/* <p>{feedback.comment || "No comment provided"}</p> */}
               </li>
             ))}
           </ul>

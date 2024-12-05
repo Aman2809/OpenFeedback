@@ -8,6 +8,7 @@ import Admin from './pages/Admin';
 import Navigation from './components/Navigation';
 import QuestionManage from './pages/QuestionManage';
 import FeedbackManage from './pages/FeedbackManage';
+import UserRatingPage from './pages/UserRatingPage';
 
 const App = () => {
   const router = createBrowserRouter([
@@ -31,6 +32,10 @@ const App = () => {
     {
       path: "/feedback",
       element: <FeedbackManage />,
+    },
+    {
+      path: "/userrating",
+      element: <UserRatingPage/>,
     },
 
 
