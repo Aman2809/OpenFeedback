@@ -188,7 +188,6 @@ public class FeedbackServiceImpl implements FeedbackService {
                 ratingCount.put(String.valueOf(rating), ratingCount.get(String.valueOf(rating)) + 1);
             }
         }
-
         return ratingCount;
     }
 
