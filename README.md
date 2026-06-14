@@ -40,16 +40,20 @@
 ## Screenshots
 
 ### Feedback Form
-![Feedback Form](path/to/feedback-form-image.png)
+<img width="1366" height="686" alt="formpage" src="https://github.com/user-attachments/assets/4998b14d-8d2c-4de5-bbeb-c4c885eb4a14" />
+
 
 ### Admin Panel - Manage Questions
-![Manage Questions](path/to/manage-questions-image.png)
+<img width="1366" height="688" alt="questionpage" src="https://github.com/user-attachments/assets/44fbb9c4-8813-439a-8bb4-31c956a03c24" />
+
 
 ### Admin Panel - View Feedback
-![View Feedback](path/to/view-feedback-image.png)
+<img width="1366" height="679" alt="feedbackpage" src="https://github.com/user-attachments/assets/2069db1e-a1ea-4371-8997-313bde68d49d" />
+
 
 ### Dashboard
-![Dashboard](path/to/dashboard-image.png)
+<img width="1366" height="684" alt="adminpage" src="https://github.com/user-attachments/assets/a39b723c-e1e3-4def-a664-ba853d23d2d7" />
+
 
 > Replace `path/to/...` with the actual file paths for your screenshots.
 
