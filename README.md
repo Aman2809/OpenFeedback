@@ -2,10 +2,21 @@
 ---
 
 # OpenFeedback
+A full-stack feedback management platform built with Spring Boot, React, and MySQL for collecting, managing, and analyzing user feedback.
 
 ## Overview
 
 **OpenFeedback** is a feedback management system designed for gathering and analyzing user feedback. The application includes a feedback form for users to submit their responses, an admin panel for managing questions and feedback, and a dashboard for monitoring key metrics. Built using **Spring Boot** for the backend and **React** for the frontend, OpenFeedback helps streamline feedback collection and analysis, making it easier for administrators to track responses and gain insights.
+
+## Tech Stack
+
+**Frontend:** React, Material UI, Axios
+
+**Backend:** Spring Boot, Spring Data JPA, REST APIs
+
+**Database:** MySQL
+
+**Tools:** Swagger, Formik, Maven
 
 ## Features
 
@@ -55,7 +66,7 @@
 <img width="1366" height="684" alt="adminpage" src="https://github.com/user-attachments/assets/a39b723c-e1e3-4def-a664-ba853d23d2d7" />
 
 
-> Replace `path/to/...` with the actual file paths for your screenshots.
+
 
 ## Project Structure
 
@@ -86,7 +97,7 @@
 
 ### Clone the repository
 ```bash
-git clone https://github.com/yourusername/OpenFeedback.git
+git clone https://github.com/Aman2809/OpenFeedback.git
 ```
 
 ### Backend Setup
